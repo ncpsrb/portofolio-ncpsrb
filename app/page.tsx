@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Briefcase, Download, Mail, XIcon } from 'lucide-react'
+import { Download, Mail, XIcon } from 'lucide-react'
 import ProjectCardModal from '@/components/ui/projectcardModal'
 import { useState } from 'react'
 import {
@@ -12,10 +12,16 @@ import {
   MorphingDialogContainer,
 } from '@/components/ui/morphing-dialog'
 import Link from 'next/link'
-import { AnimatedBackground } from '@/components/ui/animated-background'
-import { PROJECTS, WORK_EXPERIENCE, BLOG_POSTS, ABOUT_ME, EMAIL } from './data'
+import {
+  PROJECTS,
+  WORK_EXPERIENCE,
+  BLOG_POSTS,
+  ABOUT_ME,
+  EMAIL,
+  PROFILE_LINKS,
+} from './data'
 import { TechStackSection } from '@/components/ui/techstack'
-import { FaFileDownload } from 'react-icons/fa'
+import { WorkExperienceCard } from '@/components/ui/work-experience-card'
 
 // ------- Smooth motion presets -------
 const EASE = [0.22, 1, 0.36, 1] as const // soft “expo out” feel
@@ -58,11 +64,13 @@ const handleSubmit = async (e: React.FormEvent) => {
     })
 
     const data = await response.json()
-    
+
     if (data.success) {
       window.open(data.url, '_blank')
       // Close modal
-      document.activeElement?.dispatchEvent(new Event('click', { bubbles: true }))
+      document.activeElement?.dispatchEvent(
+        new Event('click', { bubbles: true }),
+      )
     } else {
       alert('Incorrect password!')
     }
@@ -140,14 +148,12 @@ export default function Personal() {
       }
 
   return (
-    
     <motion.main
       className="space-y-10"
       variants={VARIANTS_CONTAINER}
       initial={prefersReduced ? undefined : 'hidden'}
       animate={prefersReduced ? undefined : 'visible'}
     >
-      
       {/* Head */}
       <motion.section
         variants={VARIANTS_SECTION}
@@ -165,7 +171,7 @@ export default function Personal() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime-400 opacity-75" />
               <span className="relative inline-flex h-3 w-3 rounded-full bg-lime-500" />
             </span>
-            Currently available for work
+            Currently Available for New Opportunities
           </div>
 
           {/* Contact Section */}
@@ -200,7 +206,7 @@ export default function Personal() {
                         </h3>
                         <MorphingDialogClose className="rounded-full p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800">
                           <XIcon className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
-                          </MorphingDialogClose>
+                        </MorphingDialogClose>
                       </div>
 
                       <div className="space-y-4">
@@ -211,7 +217,9 @@ export default function Personal() {
                         <form
                           onSubmit={async (e) => {
                             e.preventDefault()
-                            const formData = new FormData(e.currentTarget as HTMLFormElement)
+                            const formData = new FormData(
+                              e.currentTarget as HTMLFormElement,
+                            )
                             const password = formData.get('password') as string
 
                             try {
@@ -227,12 +235,16 @@ export default function Personal() {
                                 // Open the Drive URL directly
                                 window.open(data.url, '_blank')
                                 // Close modal after successful download using proper method
-                                const closeButton = document.querySelector('[aria-label="Close dialog"]') as HTMLButtonElement
+                                const closeButton = document.querySelector(
+                                  '[aria-label="Close dialog"]',
+                                ) as HTMLButtonElement
                                 closeButton?.click()
                               } else if (data.success) {
                                 window.open(data.url, '_blank')
                                 // Close modal after successful download using proper method
-                                const closeButton = document.querySelector('[aria-label="Close dialog"]') as HTMLButtonElement
+                                const closeButton = document.querySelector(
+                                  '[aria-label="Close dialog"]',
+                                ) as HTMLButtonElement
                                 closeButton?.click()
                               } else {
                                 alert(data.error || 'Incorrect password!')
@@ -248,7 +260,7 @@ export default function Personal() {
                             name="password"
                             placeholder="Enter password"
                             required
-                            className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2 text-sm placeholder:text-zinc-500 focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-400 dark:focus:border-zinc-400 dark:focus:ring-zinc-400/20"
+                            className="w-full rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2 text-sm placeholder:text-zinc-500 focus:border-zinc-500 focus:ring-2 focus:ring-zinc-500/20 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-400 dark:focus:border-zinc-400 dark:focus:ring-zinc-400/20"
                           />
 
                           <button
@@ -263,6 +275,20 @@ export default function Personal() {
                   </MorphingDialogContent>
                 </MorphingDialogContainer>
               </MorphingDialog>
+            </div>
+
+            <div className="flex flex-wrap gap-2 pt-1">
+              {PROFILE_LINKS.map((profileLink) => (
+                <Link
+                  key={profileLink.label}
+                  href={profileLink.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center rounded-full border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-950 dark:border-white/10 dark:text-zinc-400 dark:hover:border-white/15 dark:hover:bg-white/[0.045] dark:hover:text-zinc-100"
+                >
+                  {profileLink.label}
+                </Link>
+              ))}
             </div>
 
             <p>
@@ -293,7 +319,7 @@ export default function Personal() {
       <motion.section
         variants={VARIANTS_SECTION}
         transition={TRANSITION_SECTION}
-        className="max-w-4xl mx-auto"
+        className="mx-auto max-w-4xl"
       >
         <div className="mb-5 flex items-center justify-between">
           <h3 className="text-lg font-medium">Work Experience</h3>
@@ -304,90 +330,12 @@ export default function Personal() {
           )}
         </div>
 
-        <div className="flex flex-col space-y-0">
-          <AnimatedBackground
-            // animation conflicit with hover
-            enableHover={false}
-            // safer base surfaces for both themes
-            className="h-full w-full rounded-lg bg-zinc-50 dark:bg-zinc-900"
-            transition={{ type: 'spring', bounce: 0, duration: 0.2 }}
-          >
-            {(showAll ? [...WORK_EXPERIENCE] : [...WORK_EXPERIENCE].slice(0, 4))
-              .sort((a, b) => Number(b.start) - Number(a.start))
-              .map((job) => {
-                const isCurrent = String(job.end).toLowerCase() === 'present'
-                const href = job.link ?? '#'
-                return (
-                  <Link
-                    key={job.id}
-                    href={href}
-                    // target={job.link ? '_blank' : undefined}
-                    // rel={job.link ? 'noopener noreferrer' : undefined}
-                    data-id={job.id}
-                    className={[
-                      // container + stacking context
-                      'group relative isolate block rounded-xl px-2 py-2 transition-all duration-200 ease-in-out overflow-hidden',
-                      // Clean hover effects - solid colors to prevent flickering
-                      'hover:bg-zinc-100 dark:hover:bg-zinc-800',
-                      // Subtle border accent
-                      'border-l-2 border-l-zinc-300 dark:border-l-zinc-600',
-                      'hover:border-l-lime-300 dark:hover:border-l-lime-400',
-                      // Focus states for accessibility
-                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500',
-                    ].join(' ')}
-                  >
-                    <div className="relative z-10 flex flex-col gap-1 w-full">
-                      {/* Title and company row */}
-                      <div className="min-w-0">
-                        <h4 className="font-normal text-zinc-900 dark:text-zinc-100">
-                          <span className="inline-flex items-center gap-2 flex-wrap">
-                            <Briefcase className="h-4 w-4 text-zinc-500 dark:text-zinc-400 flex-shrink-0" />
-                            <span className="truncate min-w-0">{job.title}</span>
-                            <span className="text-zinc-400 flex-shrink-0">·</span>
-                            <span className="truncate min-w-0 text-zinc-700 dark:text-zinc-300">
-                              {job.company}
-                            </span>
-                            {job.status && (
-                              <>
-                                <span className="text-zinc-400 flex-shrink-0">·</span>
-                                <span className="truncate text-zinc-600 italic dark:text-zinc-400">
-                                  {job.status}
-                                </span>
-                              </>
-                            )}
-                          </span>
-                        </h4>
-                      </div>
-
-                      {/* Description with better truncation */}
-                      {job.description && (
-                        <div className="w-full">
-                          <p className="line-clamp-3 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed break-words">
-                            {job.description}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Current status badge */}
-                      {isCurrent && (
-                        <div className="w-fit">
-                          <span className="inline-flex items-center rounded-full bg-lime-500/15 px-2 py-0.5 text-[10px] font-medium text-lime-600 ring-1 ring-lime-500/30 ring-inset dark:text-lime-400">
-                            Currently Working Here
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Dates and arrow row */}
-                      <div className="flex items-center justify-between w-full">
-                        <span className="text-sm text-zinc-500 dark:text-zinc-400">
-                          {job.start} - {job.end}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-          </AnimatedBackground>
+        <div className="grid gap-3">
+          {(showAll ? [...WORK_EXPERIENCE] : [...WORK_EXPERIENCE].slice(0, 4))
+            .sort((a, b) => Number(b.start) - Number(a.start))
+            .map((job) => (
+              <WorkExperienceCard key={job.id} job={job} />
+            ))}
         </div>
       </motion.section>
 
@@ -406,14 +354,16 @@ export default function Personal() {
           )}
         </div>
         <div className="no-scrollbar flex gap-4 overflow-x-auto sm:grid sm:grid-cols-3 sm:gap-6">
-        {(showAll ? [...PROJECTS] : [...PROJECTS].slice(0, 9))
-              .sort((a, b) => Number(b.id) - Number(a.id))
-              .map((project) => {
-                return (
-                  <motion.div
+          {(showAll ? [...PROJECTS] : [...PROJECTS].slice(0, 9))
+            .sort((a, b) => Number(b.id) - Number(a.id))
+            .map((project) => {
+              return (
+                <motion.div
                   key={project.name}
                   className="min-w-[300px] sm:min-w-0"
-                  whileHover={prefersReduced ? undefined : { scale: 0.985, y: -1 }}
+                  whileHover={
+                    prefersReduced ? undefined : { scale: 0.985, y: -1 }
+                  }
                   transition={
                     prefersReduced
                       ? undefined
@@ -423,8 +373,8 @@ export default function Personal() {
                 >
                   <ProjectCardModal project={project} />
                 </motion.div>
-                )
-              })}
+              )
+            })}
         </div>
       </motion.section>
 

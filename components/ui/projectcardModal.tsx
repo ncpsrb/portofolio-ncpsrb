@@ -7,7 +7,7 @@ import {
   MorphingDialogClose,
   MorphingDialogContainer,
 } from '@/components/ui/morphing-dialog'
-import { EyeIcon, Link, XIcon } from 'lucide-react'
+import { ExternalLink, XIcon } from 'lucide-react'
 
 type Project = {
   name: string
@@ -35,7 +35,7 @@ export default function ProjectCardModal({ project }: { project: Project }) {
       }}
     >
       <MorphingDialogTrigger>
-        <div className="group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-100 to-zinc-200 ring-1 ring-zinc-200/50 transition-all duration-300 ring-inset hover:ring-2 hover:shadow-xl hover:ring-zinc-400/50 dark:from-zinc-900 dark:to-zinc-800 dark:ring-zinc-800/50 dark:hover:ring-zinc-300/30">
+        <div className="group relative w-full cursor-pointer overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-zinc-200/70 transition-all duration-300 ring-inset hover:shadow-lg hover:shadow-zinc-200/70 dark:bg-white/[0.035] dark:ring-white/10 dark:hover:shadow-black/20 dark:hover:ring-white/15">
           {/* Video Preview */}
           <div className="transition-transform duration-500 ease-in-out group-hover:scale-105">
             {isVideo(project.video) ? (
@@ -44,14 +44,14 @@ export default function ProjectCardModal({ project }: { project: Project }) {
                 autoPlay
                 loop
                 muted
-                className="aspect-video w-full rounded-xl"
+                className="aspect-video w-full object-cover"
               />
             ) : (
               <img
                 loading="lazy"
                 src={project.video}
                 alt={project.name}
-                className="aspect-video w-full rounded-xl object-cover"
+                className="aspect-video w-full object-cover"
               />
             )}
           </div>
@@ -69,47 +69,63 @@ export default function ProjectCardModal({ project }: { project: Project }) {
 
       {/* Modal Content */}
       <MorphingDialogContainer>
-        {/* Modal Content */}
         <MorphingDialogContent className="relative w-[90vw] max-w-6xl rounded-2xl bg-zinc-50 p-4 ring-1 ring-zinc-200/50 transition-all duration-300 ease-in-out ring-inset dark:bg-zinc-950 dark:ring-zinc-800/50">
-          {isVideo(project.video) ? (
-            <video
-              src={project.video}
-              autoPlay
-              loop
-              muted
-              className="h-[60vh] w-full rounded-xl object-contain"
-            />
-          ) : (
-            <img
-              loading="eager"
-              src={project.video}
-              alt={project.name}
-              className="h-[60vh] w-full rounded-xl object-contain"
-            />
-          )}
+          <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#171717]">
+            <div className="flex items-start justify-between gap-4 border-b border-zinc-200 px-4 py-3 dark:border-white/10">
+              <div className="min-w-0">
+                <h3 className="truncate text-sm font-medium text-zinc-950 dark:text-zinc-100">
+                  {project.name}
+                </h3>
+                <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+                  {project.description}
+                </p>
+              </div>
+
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-zinc-100"
+                  title="Open project"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+
+            <div className="bg-zinc-100 p-3 dark:bg-black/20">
+              {isVideo(project.video) ? (
+                <video
+                  src={project.video}
+                  autoPlay
+                  loop
+                  muted
+                  className="max-h-[68vh] w-full rounded-lg bg-white object-contain dark:bg-zinc-950"
+                />
+              ) : (
+                <img
+                  loading="eager"
+                  src={project.video}
+                  alt={project.name}
+                  className="max-h-[68vh] w-full rounded-lg bg-white object-contain dark:bg-zinc-950"
+                />
+              )}
+            </div>
+          </div>
         </MorphingDialogContent>
 
-        {/* Top-right Buttons (Eye + Close) */}
-        <div className="fixed top-6 right-6 z-50 flex items-center gap-2">
-          {project.link && (
-            <a
-              href={project.link}
-              className="inline-flex items-center justify-center rounded-full bg-white p-2 shadow-md transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
-            >
-              <EyeIcon className="h-10 w-10 text-zinc-600 dark:text-zinc-200" />
-            </a>
-          )}
-
+        <div className="fixed top-5 right-5 z-50">
           <button
             onClick={() =>
               document.activeElement?.dispatchEvent(
                 new Event('click', { bubbles: true }),
               )
             }
-            className="inline-flex items-center justify-center rounded-full bg-white p-2 shadow-md transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 bg-white/90 text-zinc-600 shadow-sm backdrop-blur transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:border-white/10 dark:bg-zinc-950/80 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-white"
             title="Close"
           >
-            <XIcon className="h-10 w-10 text-zinc-600 dark:text-zinc-200" />
+            <XIcon className="h-4 w-4" />
           </button>
         </div>
       </MorphingDialogContainer>

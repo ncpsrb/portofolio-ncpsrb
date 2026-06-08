@@ -32,10 +32,15 @@ type AboutMe = {
   description: string
 }
 
+type ProfileLink = {
+  label: string
+  href: string
+}
+
 export const PROJECTS: Project[] = [
   {
     name: 'Robot Launcher',
-    description: 'Automation that monitor & launch Robot',
+    description: 'Automation control panel for monitoring and launching robots',
     link: '',
     video: '/portofolio/robot-launcher/launcher.png',
     id: 'project1',
@@ -50,7 +55,8 @@ export const PROJECTS: Project[] = [
   },
   {
     name: 'NodeJS Automation Dashboard',
-    description: 'Modern website built to monitor & control automation robots (Python & Javascript)',
+    description:
+      'Modern dashboard for monitoring and controlling automation robots',
     link: '',
     video: '/portofolio/robot-dashboard/dashboard.png',
     id: 'project3',
@@ -63,7 +69,7 @@ export const PROJECTS: Project[] = [
     id: 'project4',
   },
   {
-    name: 'Japanse Learning Platform',
+    name: 'Japanese Learning Platform',
     description: 'Interactive platform designed to help users learn Japanese',
     link: '',
     video: '/portofolio/web/kiyora.png',
@@ -87,8 +93,7 @@ export const PROJECTS: Project[] = [
   },
   {
     name: 'Power Automate Projects',
-    description:
-      'Develop Power Automate Flow to automate daily tasks',
+    description: 'Power Automate flows for streamlining daily operations',
     link: '',
     video: '/portofolio/power-automate/image.png',
     id: 'project8',
@@ -96,7 +101,7 @@ export const PROJECTS: Project[] = [
   {
     name: 'Microsoft Dev Tenant API',
     description:
-      'Develop API to get Microsoft Dev Tenant Information using Graph API',
+      'API service for retrieving Microsoft developer tenant data with Graph API',
     link: '',
     video: '/portofolio/m365tenant/image.png',
     id: 'project9',
@@ -105,14 +110,25 @@ export const PROJECTS: Project[] = [
 
 export const WORK_EXPERIENCE: WorkExperience[] = [
   {
+    company: 'Evermos',
+    title: 'Security Automation Engineer',
+    start: '2025',
+    end: 'Present',
+    link: '/experience/post/evermos',
+    status: 'Full-time',
+    description:
+      'Building security automation workflows, detection support, and internal tools that improve response speed and reduce manual security operations',
+    id: 'work5',
+  },
+  {
     company: 'PT Bank Sumitomo Mitsui Indonesia',
     title: 'Robotic Process Automation Developer',
     start: '2023',
-    end: 'Present',
+    end: '2025',
     link: '/experience/post/smbc-indonesia',
     status: 'Contract',
     description:
-      'Designing, developing, maintaining, and monitoring automation robots that handle thousands of daily transactions',
+      'Designed, developed, maintained, and monitored automation robots that handled thousands of daily transactions',
     id: 'work1',
   },
   {
@@ -123,7 +139,7 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     link: '/experience/post/bank-mandiri',
     status: 'Contract',
     description:
-      'Maintain & developing automation test script (API Testing, Web Application Testing, Database Testing)',
+      'Maintained and developed automation test scripts for API, web application, and database testing',
     id: 'work2',
   },
   {
@@ -134,7 +150,7 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     link: '/experience/post/gunadarma',
     status: 'Contract',
     description:
-      'Providing help to others student to understand to basic of programming (MySQL, VBs) ',
+      'Helped students understand programming fundamentals, MySQL, and Visual Basic',
     id: 'work3',
   },
   {
@@ -144,8 +160,7 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
     end: 'Present',
     link: '',
     status: 'Freelance',
-    description:
-      'Developing web application base on client requirement',
+    description: 'Developing web applications based on client requirements',
     id: 'work4',
   },
 ]
@@ -165,6 +180,21 @@ export const ABOUT_ME: AboutMe[] = [
     profession: 'Fullstack Developer',
     image: '/personal.jpg',
     description: `👋 Hey there! I’m Natan, a passionate Fullstack Developer from 🇮🇩 Indonesia.\n`,
+  },
+]
+
+export const PROFILE_LINKS: ProfileLink[] = [
+  {
+    label: 'Upwork',
+    href: 'https://www.upwork.com/freelancers/~01ce3121e539cb7b69?mp_source=share',
+  },
+  {
+    label: 'Fiverr',
+    href: 'https://www.fiverr.com/natanaelpasaribu',
+  },
+  {
+    label: 'Automation',
+    href: 'https://xnstore.my.id',
   },
 ]
 

@@ -8,7 +8,7 @@ import { ThemeProvider } from 'next-themes'
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ffffff',
+  themeColor: '#171717',
 }
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s | Natanael Pasaribu',
   },
   description:
-    'Portfolio of Natanael Pasaribu – an RPA Developer, QA Automation Engineer, and Software Developer. Passionate about building efficient automation and scalable systems.',
+    'Portfolio of Natanael Pasaribu, a Security Automation Engineer building automation, internal tools, and scalable workflows across security, QA, and RPA.',
 }
 
 const geist = Geist({
@@ -40,16 +40,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <body
         className={`${geist.variable} ${geistMono.variable} bg-white tracking-tight antialiased dark:bg-[#171717] dark:text-zinc-200`}
       >
         <ThemeProvider
-          enableSystem={true}
+          enableSystem={false}
           attribute="class"
           storageKey="theme"
-          defaultTheme="system"
+          defaultTheme="dark"
+          disableTransitionOnChange
         >
           <div className="flex min-h-screen w-full flex-col font-[family-name:var(--font-inter-tight)]">
             <div className="p- relative mx-auto w-full max-w-4xl p-3">
