@@ -1,15 +1,9 @@
 'use client'
 import { TextEffect } from '@/components/ui/text-effect'
 import Link from 'next/link'
-import { ABOUT_ME, PROFILE_LINKS } from './data'
+import { ABOUT_ME } from './data'
 import { Magnetic } from '@/components/ui/magnetic'
-import {
-  Github,
-  Twitter,
-  Linkedin,
-  ArrowLeft,
-  BriefcaseBusiness,
-} from 'lucide-react'
+import { Github, Twitter, Linkedin, ArrowLeft } from 'lucide-react'
 
 import { usePathname, useRouter } from 'next/navigation'
 function MagneticSocialLink({
@@ -117,16 +111,6 @@ export function Header() {
 
         <MagneticSocialLink link="https://linkedin.com/in/natanaelps">
           <Linkedin className="h-4 w-4" />
-        </MagneticSocialLink>
-
-        <MagneticSocialLink
-          link={
-            PROFILE_LINKS.find(
-              (profileLink) => profileLink.label === 'Automation',
-            )?.href ?? 'https://xnstore.my.id'
-          }
-        >
-          <BriefcaseBusiness className="h-4 w-4" />
         </MagneticSocialLink>
       </div>
     </header>
