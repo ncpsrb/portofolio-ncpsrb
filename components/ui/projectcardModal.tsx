@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import Image from 'next/image'
 import {
   MorphingDialog,
   MorphingDialogTrigger,
@@ -26,6 +28,9 @@ const isVideo = (url: string) => {
 }
 
 export default function ProjectCardModal({ project }: { project: Project }) {
+  const [thumbLoaded, setThumbLoaded] = useState(false)
+  const [modalLoaded, setModalLoaded] = useState(false)
+
   return (
     <MorphingDialog
       transition={{
@@ -37,7 +42,7 @@ export default function ProjectCardModal({ project }: { project: Project }) {
       <MorphingDialogTrigger>
         <div className="group relative w-full cursor-pointer overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-zinc-200/70 transition-all duration-300 ring-inset hover:shadow-lg hover:shadow-zinc-200/70 dark:bg-white/[0.035] dark:ring-white/10 dark:hover:shadow-black/20 dark:hover:ring-white/15">
           {/* Video Preview */}
-          <div className="transition-transform duration-500 ease-in-out group-hover:scale-105">
+          <div className="relative aspect-video w-full overflow-hidden transition-transform duration-500 ease-in-out group-hover:scale-105">
             {isVideo(project.video) ? (
               <video
                 src={project.video}
@@ -47,11 +52,15 @@ export default function ProjectCardModal({ project }: { project: Project }) {
                 className="aspect-video w-full object-cover"
               />
             ) : (
-              <img
-                loading="lazy"
+              <Image
                 src={project.video}
                 alt={project.name}
-                className="aspect-video w-full object-cover"
+                fill
+                sizes="(min-width: 640px) 33vw, 100vw"
+                onLoad={() => setThumbLoaded(true)}
+                className={`object-cover transition-opacity duration-200 ${
+                  thumbLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             )}
           </div>
@@ -104,12 +113,18 @@ export default function ProjectCardModal({ project }: { project: Project }) {
                   className="max-h-[68vh] w-full rounded-lg bg-white object-contain dark:bg-zinc-950"
                 />
               ) : (
-                <img
-                  loading="eager"
-                  src={project.video}
-                  alt={project.name}
-                  className="max-h-[68vh] w-full rounded-lg bg-white object-contain dark:bg-zinc-950"
-                />
+                <div className="relative h-[68vh] w-full">
+                  <Image
+                    src={project.video}
+                    alt={project.name}
+                    fill
+                    sizes="90vw"
+                    onLoad={() => setModalLoaded(true)}
+                    className={`rounded-lg bg-white object-contain transition-opacity duration-200 dark:bg-zinc-950 ${
+                      modalLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                </div>
               )}
             </div>
           </div>
