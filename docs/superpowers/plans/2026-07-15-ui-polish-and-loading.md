@@ -759,9 +759,9 @@ Replace with:
                 >
 ```
 
-- [ ] **Step 5: Add hover and focus-visible to the three "Show All" links**
+- [ ] **Step 5: Add hover and focus-visible to the "Show All" links**
 
-This exact `className` appears three times identically (Work Experience, Projects, and the commented-out Notes section keeps its own copy inside the comment block — do not touch text inside the `{/* ... */}` comment, only the three live, uncommented occurrences). Find each live occurrence of:
+This exact `className` appears three times total in the file, but only **two are live**: Work Experience and Projects. The Blog/Notes section's entire `<motion.section>` — including its own "Show All →" link — is wrapped in a `{/* ... */}` comment block, so its copy of this string is not live code. Do not touch text inside that comment block; only replace the string in the two live, uncommented occurrences. Find each live occurrence of:
 
 ```tsx
 className="text-sm font-medium"
