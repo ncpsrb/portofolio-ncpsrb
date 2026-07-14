@@ -1,6 +1,7 @@
 'use client'
 import { TextEffect } from '@/components/ui/text-effect'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ABOUT_ME } from './data'
 import { Magnetic } from '@/components/ui/magnetic'
 import { Github, Twitter, Linkedin, ArrowLeft } from 'lucide-react'
@@ -18,7 +19,7 @@ function MagneticSocialLink({
       <a
         href={link}
         target="_blank"
-        className="group relative inline-flex shrink-0 items-center gap-[1px] rounded-full bg-zinc-100 px-2.5 py-1 text-sm text-black transition-colors duration-200 hover:bg-zinc-950 hover:text-zinc-50 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700"
+        className="group relative inline-flex shrink-0 items-center gap-[1px] rounded-full bg-zinc-100 px-2.5 py-1 text-sm text-black transition-colors duration-200 hover:bg-zinc-950 hover:text-zinc-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700 dark:focus-visible:ring-zinc-500"
       >
         {children}
         <svg
@@ -49,16 +50,19 @@ export function Header() {
   const showBack = !isHome && !isMainPage
   return (
     <header className="mt-6 mb-8 flex items-center justify-between md:mt-6">
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-center gap-2">
         {showBack ? (
           // Back Button
           <button
             onClick={() => router.back()}
-            className="group relative h-15 w-15 overflow-hidden rounded-full border border-zinc-300 dark:border-zinc-700"
+            className="group relative h-15 w-15 overflow-hidden rounded-full border border-zinc-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-700 dark:focus-visible:ring-zinc-500"
           >
-            <img
+            <Image
               src={ABOUT_ME[0].image}
               alt="Profile"
+              width={60}
+              height={60}
+              priority
               className="h-15 w-15 object-cover"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -69,11 +73,14 @@ export function Header() {
           // Normal Home/Profile
           <Link
             href="/"
-            className="group relative h-15 w-15 overflow-hidden rounded-full border border-zinc-300 dark:border-zinc-700"
+            className="group relative h-15 w-15 overflow-hidden rounded-full border border-zinc-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-zinc-700 dark:focus-visible:ring-zinc-500"
           >
-            <img
+            <Image
               src={ABOUT_ME[0].image}
               alt="Profile"
+              width={60}
+              height={60}
+              priority
               className="h-15 w-15 object-cover"
             />
             {!isHome && (
@@ -83,15 +90,18 @@ export function Header() {
             )}
           </Link>
         )}
-        <div>
-          <Link href="/" className="font-medium text-black dark:text-white">
+        <div className="min-w-0">
+          <Link
+            href="/"
+            className="block truncate font-medium text-black dark:text-white"
+          >
             {ABOUT_ME[0].name}
           </Link>
           <TextEffect
             as="p"
             preset="fade"
             per="char"
-            className="text-zinc-600 dark:text-zinc-500"
+            className="truncate text-zinc-600 dark:text-zinc-500"
             delay={0.5}
           >
             {ABOUT_ME[0].profession}
