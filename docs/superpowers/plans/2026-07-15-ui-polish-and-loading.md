@@ -519,73 +519,70 @@ git commit -m "feat: add root loading skeleton"
 ### Task 4: Route loading skeletons (projects, experience, blog)
 
 **Files:**
+- Create: `components/ui/list-loading-skeleton.tsx`
 - Create: `app/projects/loading.tsx`
 - Create: `app/blog/loading.tsx`
 - Create: `app/experience/loading.tsx`
 
 **Interfaces:**
 - Consumes: none.
-- Produces: none (Next.js Suspense fallback convention).
+- Produces: `ListLoadingSkeleton` — a default-exported React component from `components/ui/list-loading-skeleton.tsx`, taking no props, rendering the row-list skeleton markup shared by the projects and blog routes (they use identical list layouts — see `app/projects/page.tsx` and `app/blog/page.tsx`).
 
-- [ ] **Step 1: Create the projects list skeleton**
+- [ ] **Step 1: Create the shared list skeleton component**
+
+Create `components/ui/list-loading-skeleton.tsx`:
+
+```tsx
+export default function ListLoadingSkeleton() {
+  return (
+    <main
+      className="animate-pulse space-y-0"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <div className="mb-5 h-7 w-40 rounded-md bg-zinc-200 dark:bg-zinc-800" />
+      <div className="flex flex-col space-y-0">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="rounded-xl px-4 py-4">
+            <div className="space-y-2">
+              <div className="h-4 w-1/3 rounded bg-zinc-200 dark:bg-zinc-800" />
+              <div className="h-3 w-2/3 rounded bg-zinc-200 dark:bg-zinc-800" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </main>
+  )
+}
+```
+
+- [ ] **Step 2: Create the projects route loading file**
 
 Create `app/projects/loading.tsx`:
 
 ```tsx
+import ListLoadingSkeleton from '@/components/ui/list-loading-skeleton'
+
 export default function Loading() {
-  return (
-    <main
-      className="animate-pulse space-y-0"
-      aria-busy="true"
-      aria-live="polite"
-    >
-      <div className="mb-5 h-7 w-40 rounded-md bg-zinc-200 dark:bg-zinc-800" />
-      <div className="flex flex-col space-y-0">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-xl px-4 py-4">
-            <div className="space-y-2">
-              <div className="h-4 w-1/3 rounded bg-zinc-200 dark:bg-zinc-800" />
-              <div className="h-3 w-2/3 rounded bg-zinc-200 dark:bg-zinc-800" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </main>
-  )
+  return <ListLoadingSkeleton />
 }
 ```
 
-- [ ] **Step 2: Create the blog list skeleton**
+- [ ] **Step 3: Create the blog route loading file**
 
-Create `app/blog/loading.tsx` (same row-list layout as the projects skeleton — the blog and projects pages share the same list markup):
+Create `app/blog/loading.tsx`:
 
 ```tsx
+import ListLoadingSkeleton from '@/components/ui/list-loading-skeleton'
+
 export default function Loading() {
-  return (
-    <main
-      className="animate-pulse space-y-0"
-      aria-busy="true"
-      aria-live="polite"
-    >
-      <div className="mb-5 h-7 w-40 rounded-md bg-zinc-200 dark:bg-zinc-800" />
-      <div className="flex flex-col space-y-0">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-xl px-4 py-4">
-            <div className="space-y-2">
-              <div className="h-4 w-1/3 rounded bg-zinc-200 dark:bg-zinc-800" />
-              <div className="h-3 w-2/3 rounded bg-zinc-200 dark:bg-zinc-800" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </main>
-  )
+  return <ListLoadingSkeleton />
 }
 ```
 
-- [ ] **Step 3: Create the experience list skeleton**
+- [ ] **Step 4: Create the experience list skeleton**
 
-Create `app/experience/loading.tsx`:
+The experience route has a different layout (header block + card grid, not a row list — see `app/experience/page.tsx`), so it gets its own inline skeleton rather than the shared component. Create `app/experience/loading.tsx`:
 
 ```tsx
 export default function Loading() {
@@ -614,19 +611,19 @@ export default function Loading() {
 }
 ```
 
-- [ ] **Step 4: Type-check**
+- [ ] **Step 5: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: no errors (see Global Constraints — `next lint` is broken repo-wide on a pre-existing, unrelated issue, so `tsc` is used for verification instead).
 
-- [ ] **Step 5: Manual visual check**
+- [ ] **Step 6: Manual visual check**
 
-Run: `npm run dev`, open `http://localhost:3000`. Click "Show All Projects →", then use the browser back button, then click "Show All →" for Work Experience, then back, then navigate to the blog link if visible. Because these routes are statically prerendered, the skeleton may flash too briefly to see reliably on localhost — confirm at minimum that each route still renders its real content correctly afterward (no console errors, no broken layout) and that the skeleton files' markup visually resembles the real page layout by comparing side-by-side (open each `loading.tsx` skeleton mentally against its corresponding `page.tsx` layout — row heights and grid shape should roughly match).
+Run: `npm run dev`, open `http://localhost:3000`. Click "Show All Projects →", then use the browser back button, then click "Show All →" for Work Experience, then back, then navigate to the blog link if visible. Because these routes are statically prerendered, the skeleton may flash too briefly to see reliably on localhost — confirm at minimum that each route still renders its real content correctly afterward (no console errors, no broken layout) and that the skeleton markup visually resembles the real page layout by comparing side-by-side (open each `loading.tsx`/`list-loading-skeleton.tsx` skeleton mentally against its corresponding `page.tsx` layout — row heights and grid shape should roughly match).
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
-git add app/projects/loading.tsx app/blog/loading.tsx app/experience/loading.tsx
+git add components/ui/list-loading-skeleton.tsx app/projects/loading.tsx app/blog/loading.tsx app/experience/loading.tsx
 git commit -m "feat: add route-level loading skeletons for projects, blog, experience"
 ```
 
