@@ -12,7 +12,7 @@
 
 - No new npm dependencies — everything here uses `next/image` and Tailwind, already installed.
 - Reuse the existing focus-visible convention found in `components/ui/work-experience-card.tsx:119`: `focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500`. Apply this exact class string (append to existing `className`) to every interactive element touched in this plan that lacks a focus-visible state.
-- No automated test suite exists in this repo (verified: no test script in `package.json`, no test files). Verification is `next lint` (fast, per task) and `next build` (full type-check + production build, final task) plus a manual dev-server visual check, matching the design spec's Testing section.
+- No automated test suite exists in this repo (verified: no test script in `package.json`, no test files). `next lint` is also currently broken on `main` itself (pre-existing: `eslint.config.mjs` extends `plugin:prettier/recommended`, which needs `eslint-plugin-prettier` + `eslint-config-prettier` — neither is installed, and installing them surfaces a further ESLint 9 flat-config incompatibility). Fixing that is out of scope for this plan. Verification is `npx tsc --noEmit` (fast, per task) and `npm run build` (full type-check + production build, final task) plus a manual dev-server visual check, matching the design spec's Testing section.
 - All image assets referenced in this plan live under `/public` already (confirmed present: `public/personal.jpg`, `public/portofolio/**/*.png`). No `next.config.mjs` changes are expected.
 - Do not modify `image-generator`'s internal behavior — only its discoverability (Task 6).
 
@@ -217,10 +217,10 @@ Replace with:
       <div className="flex min-w-0 items-center gap-2">
 ```
 
-- [ ] **Step 6: Lint**
+- [ ] **Step 6: Type-check**
 
-Run: `npx next lint --file app/header.tsx`
-Expected: no errors (warnings about unrelated files are fine — this repo has no per-file lint flag, so if that command errors as unsupported, run `npx next lint` and confirm no new errors reference `app/header.tsx`).
+Run: `npx tsc --noEmit`
+Expected: no errors (`next lint` is broken repo-wide on a pre-existing, unrelated issue — see Global Constraints — so this task uses `tsc` for verification instead).
 
 - [ ] **Step 7: Manual visual check**
 
@@ -430,10 +430,10 @@ Replace with:
 
 Note: this changes the expanded image container from `max-h-[68vh]` (height driven by the image's natural aspect ratio, capped at 68vh) to a fixed `h-[68vh]` (always 68vh tall, image letterboxed inside via `object-contain`). This is a deliberate trade-off: `next/image` with `fill` requires a sized parent, and a fixed height is the simplest way to get that without measuring every project image's aspect ratio. Visually, small-aspect-ratio images will now sit in a slightly taller box than before instead of shrinking to fit — acceptable since the box is still centered and letterboxed correctly.
 
-- [ ] **Step 4: Lint**
+- [ ] **Step 4: Type-check**
 
-Run: `npx next lint`
-Expected: no new errors referencing `components/ui/projectcardModal.tsx`.
+Run: `npx tsc --noEmit`
+Expected: no errors (see Global Constraints — `next lint` is broken repo-wide on a pre-existing, unrelated issue, so `tsc` is used for verification instead).
 
 - [ ] **Step 5: Manual visual check**
 
@@ -498,10 +498,10 @@ export default function Loading() {
 }
 ```
 
-- [ ] **Step 2: Lint**
+- [ ] **Step 2: Type-check**
 
-Run: `npx next lint`
-Expected: no errors referencing `app/loading.tsx`.
+Run: `npx tsc --noEmit`
+Expected: no errors (see Global Constraints — `next lint` is broken repo-wide on a pre-existing, unrelated issue, so `tsc` is used for verification instead).
 
 - [ ] **Step 3: Manual visual check**
 
@@ -614,10 +614,10 @@ export default function Loading() {
 }
 ```
 
-- [ ] **Step 4: Lint**
+- [ ] **Step 4: Type-check**
 
-Run: `npx next lint`
-Expected: no errors referencing any of the three new files.
+Run: `npx tsc --noEmit`
+Expected: no errors (see Global Constraints — `next lint` is broken repo-wide on a pre-existing, unrelated issue, so `tsc` is used for verification instead).
 
 - [ ] **Step 5: Manual visual check**
 
@@ -776,10 +776,10 @@ Replace each with:
 className="rounded-sm text-sm font-medium text-zinc-800 transition-colors hover:text-zinc-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-200 dark:hover:text-zinc-400 dark:focus-visible:ring-zinc-500"
 ```
 
-- [ ] **Step 6: Lint**
+- [ ] **Step 6: Type-check**
 
-Run: `npx next lint`
-Expected: no errors referencing `app/page.tsx`.
+Run: `npx tsc --noEmit`
+Expected: no errors (see Global Constraints — `next lint` is broken repo-wide on a pre-existing, unrelated issue, so `tsc` is used for verification instead).
 
 - [ ] **Step 7: Manual visual check**
 
@@ -864,10 +864,10 @@ export function Footer() {
 }
 ```
 
-- [ ] **Step 2: Lint**
+- [ ] **Step 2: Type-check**
 
-Run: `npx next lint`
-Expected: no errors referencing `app/footer.tsx`.
+Run: `npx tsc --noEmit`
+Expected: no errors (see Global Constraints — `next lint` is broken repo-wide on a pre-existing, unrelated issue, so `tsc` is used for verification instead).
 
 - [ ] **Step 3: Manual visual check**
 
@@ -891,14 +891,9 @@ git commit -m "feat: link image-generator tool from footer"
 - [ ] **Step 1: Full production build**
 
 Run: `npm run build`
-Expected: build completes with no type errors and no new warnings. This is the first point all six prior tasks' changes are type-checked together.
+Expected: build completes with no type errors and all 19 routes still generate (baseline: `/`, `/_not-found`, `/api/download-cv`, `/api/img`, `/blog`, `/blog/post/exploring-the-intersection-of-design-ai-and-design-engineering`, `/delete-data`, `/experience`, `/experience/post/bank-mandiri`, `/experience/post/evermos`, `/experience/post/gunadarma`, `/experience/post/nstore-tech`, `/experience/post/smbc-indonesia`, `/image-generator`, `/privacy-policy`, `/projects`, `/robots.txt`, plus the loading fallbacks are not separate routes). This is the first point all six prior tasks' changes are type-checked together. Note: the build output will still print an ESLint plugin-load error during its lint step (pre-existing, unrelated — see Global Constraints); this does not fail the build and is expected.
 
-- [ ] **Step 2: Full lint pass**
-
-Run: `npm run lint`
-Expected: no errors.
-
-- [ ] **Step 3: End-to-end manual walkthrough**
+- [ ] **Step 2: End-to-end manual walkthrough**
 
 Run: `npm run start` (serves the production build), open `http://localhost:3000`.
 
@@ -910,7 +905,7 @@ Walk through and confirm:
 - Toggle dark/light theme via the footer switch — confirm all new focus rings and the footer link are legible in both themes.
 - Resize the browser to a mobile width (~375px) — confirm the header doesn't overflow/truncate awkwardly and project cards remain scrollable.
 
-- [ ] **Step 4: Confirm git state**
+- [ ] **Step 3: Confirm git state**
 
 Run: `git log --oneline -8` and `git status`
 Expected: six feature commits from Tasks 1–6 on top of the existing history, working tree clean (no leftover uncommitted changes, no leftover `setTimeout` debug line from Task 3).
