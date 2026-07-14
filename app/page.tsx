@@ -82,55 +82,6 @@ const handleEmailClick = () => {
   window.location.href = `mailto:${EMAIL}?subject=From%20Portfolio%20Website&body=Hi,%20may%20we%20have%20quick%20discussion`
 }
 
-type ProjectVideoProps = { src: string }
-
-function ProjectVideo({ src }: ProjectVideoProps) {
-  return (
-    <MorphingDialog
-      transition={{ type: 'spring', damping: 24, stiffness: 220, mass: 0.8 }}
-    >
-      <MorphingDialogTrigger>
-        <video
-          src={src}
-          autoPlay
-          loop
-          muted
-          className="aspect-video w-full cursor-zoom-in rounded-xl"
-        />
-      </MorphingDialogTrigger>
-      <MorphingDialogContainer>
-        <MorphingDialogContent className="relative aspect-video rounded-2xl bg-zinc-50 p-1 ring-1 ring-zinc-200/50 ring-inset dark:bg-zinc-950 dark:ring-zinc-800/50">
-          <video
-            src={src}
-            autoPlay
-            loop
-            muted
-            className="aspect-video h-[50vh] w-full rounded-xl md:h-[70vh]"
-          />
-        </MorphingDialogContent>
-        <MorphingDialogClose
-          className="fixed top-6 right-6 h-fit w-fit rounded-full bg-white p-1"
-          variants={{
-            initial: { opacity: 0, y: -2 },
-            animate: {
-              opacity: 1,
-              y: 0,
-              transition: { ease: EASE, duration: 0.25, delay: 0.2 },
-            },
-            exit: {
-              opacity: 0,
-              y: -2,
-              transition: { ease: EASE, duration: 0.15 },
-            },
-          }}
-        >
-          <XIcon className="h-5 w-5 text-zinc-500" />
-        </MorphingDialogClose>
-      </MorphingDialogContainer>
-    </MorphingDialog>
-  )
-}
-
 export default function Personal() {
   const [showAll, setShowAll] = useState(false)
   const prefersReduced = useReducedMotion()
@@ -179,7 +130,7 @@ export default function Personal() {
             <div className="flex gap-2">
               <button
                 onClick={handleEmailClick}
-                className="inline-flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-600"
+                className="inline-flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500"
               >
                 <Mail />
                 Contact Me
@@ -192,7 +143,7 @@ export default function Personal() {
                 }}
               >
                 <MorphingDialogTrigger>
-                  <button className="inline-flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-600">
+                  <button className="inline-flex items-center gap-2 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500">
                     <Download />
                     Download Resume
                   </button>
@@ -265,7 +216,7 @@ export default function Personal() {
 
                           <button
                             type="submit"
-                            className="w-full rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-600 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                            className="w-full rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-zinc-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus-visible:ring-zinc-500"
                           >
                             Download CV
                           </button>
@@ -284,7 +235,7 @@ export default function Personal() {
                   href={profileLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-950 dark:border-white/10 dark:text-zinc-400 dark:hover:border-white/15 dark:hover:bg-white/[0.045] dark:hover:text-zinc-100"
+                  className="inline-flex items-center rounded-full border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:border-white/10 dark:text-zinc-400 dark:hover:border-white/15 dark:hover:bg-white/[0.045] dark:hover:text-zinc-100 dark:focus-visible:ring-zinc-500"
                 >
                   {profileLink.label}
                 </Link>
@@ -324,7 +275,10 @@ export default function Personal() {
         <div className="mb-5 flex items-center justify-between">
           <h3 className="text-lg font-medium">Work Experience</h3>
           {WORK_EXPERIENCE.length > 3 && (
-            <Link href="/experience" className="text-sm font-medium">
+            <Link
+              href="/experience"
+              className="rounded-sm text-sm font-medium text-zinc-800 transition-colors hover:text-zinc-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-200 dark:hover:text-zinc-400 dark:focus-visible:ring-zinc-500"
+            >
               Show All →
             </Link>
           )}
@@ -348,7 +302,10 @@ export default function Personal() {
         <div className="mb-5 flex items-center justify-between">
           <h3 className="text-lg font-medium">My Projects</h3>
           {PROJECTS.length > 4 && (
-            <Link href="/projects" className="text-sm font-medium">
+            <Link
+              href="/projects"
+              className="rounded-sm text-sm font-medium text-zinc-800 transition-colors hover:text-zinc-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-200 dark:hover:text-zinc-400 dark:focus-visible:ring-zinc-500"
+            >
               Show All Projects →
             </Link>
           )}
