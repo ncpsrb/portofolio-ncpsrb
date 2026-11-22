@@ -2,7 +2,6 @@
 
 import { BLOG_POSTS } from '../data'
 import Link from 'next/link'
-import { AnimatedBackground } from '@/components/ui/animated-background'
 import { ArrowRight } from 'lucide-react'
 
 export default function BlogPage() {
@@ -22,16 +21,7 @@ export default function BlogPage() {
               }`}
             >
               {isAvailable && (
-                <AnimatedBackground
-                  enableHover
-                  className="absolute inset-0 z-0 rounded-xl bg-gradient-to-tr from-pink-500/10 to-blue-500/10"
-                  transition={{
-                    type: 'spring',
-                    bounce: 0,
-                    duration: 0.3,
-                  }}
-                  children={[]}
-                />
+                <div className="pointer-events-none absolute inset-0 z-0 rounded-xl bg-gradient-to-tr from-pink-500/10 to-blue-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               )}
               <div className="relative z-10 flex items-center justify-between">
                 <div className="space-y-1">

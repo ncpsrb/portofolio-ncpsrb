@@ -1,7 +1,6 @@
 // app/projects/page.tsx
 import { PROJECTS } from '../data'
 import Link from 'next/link'
-import { AnimatedBackground } from '@/components/ui/animated-background'
 import { ArrowRight } from 'lucide-react'
 export default function ProjectsPage() {
   return (
@@ -21,16 +20,7 @@ export default function ProjectsPage() {
               }`}
             >
               {isAvailable && (
-                <AnimatedBackground
-                  enableHover
-                  className="absolute inset-0 z-0 rounded-xl bg-gradient-to-tr from-pink-500/10 to-blue-500/10"
-                  transition={{
-                    type: 'spring',
-                    bounce: 0,
-                    duration: 0.3,
-                  }}
-                  children={[]}
-                />
+                <div className="pointer-events-none absolute inset-0 z-0 rounded-xl bg-gradient-to-tr from-pink-500/10 to-blue-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               )}
 
               <div className="relative z-10 flex items-center justify-between">

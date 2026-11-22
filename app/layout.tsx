@@ -41,7 +41,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <noscript>
+          <style>{`
+            [style*="opacity:0"], [style*="opacity: 0"] {
+              opacity: 1 !important;
+              filter: none !important;
+              transform: none !important;
+            }
+          `}</style>
+        </noscript>
+      </head>
       <body
         className={`${geist.variable} ${geistMono.variable} bg-white tracking-tight antialiased dark:bg-[#171717] dark:text-zinc-200`}
       >

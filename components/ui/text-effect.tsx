@@ -7,6 +7,7 @@ import {
   Transition,
   Variant,
   Variants,
+  useReducedMotion,
 } from 'motion/react'
 import React from 'react'
 
@@ -221,6 +222,17 @@ export function TextEffect({
   segmentTransition,
   style,
 }: TextEffectProps) {
+  const prefersReduced = useReducedMotion()
+
+  if (prefersReduced) {
+    const Component = (as ?? 'p') as keyof React.JSX.IntrinsicElements
+    return (
+      <Component className={className} style={style}>
+        {children}
+      </Component>
+    )
+  }
+
   const segments = splitText(children, per)
   const MotionTag = motion[as as keyof typeof motion] as typeof motion.div
 

@@ -28,9 +28,6 @@ const isVideo = (url: string) => {
 }
 
 export default function ProjectCardModal({ project }: { project: Project }) {
-  const [thumbLoaded, setThumbLoaded] = useState(false)
-  const [modalLoaded, setModalLoaded] = useState(false)
-
   return (
     <MorphingDialog
       transition={{
@@ -57,10 +54,7 @@ export default function ProjectCardModal({ project }: { project: Project }) {
                 alt={project.name}
                 fill
                 sizes="(min-width: 640px) 33vw, 100vw"
-                onLoad={() => setThumbLoaded(true)}
-                className={`object-cover transition-opacity duration-200 ${
-                  thumbLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
+                className="object-cover"
               />
             )}
           </div>
@@ -119,10 +113,7 @@ export default function ProjectCardModal({ project }: { project: Project }) {
                     alt={project.name}
                     fill
                     sizes="90vw"
-                    onLoad={() => setModalLoaded(true)}
-                    className={`rounded-lg bg-white object-contain transition-opacity duration-200 dark:bg-zinc-950 ${
-                      modalLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    className="rounded-lg bg-white object-contain dark:bg-zinc-950"
                   />
                 </div>
               )}

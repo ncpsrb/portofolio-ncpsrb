@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'motion/react'
 import { Download, Mail, XIcon } from 'lucide-react'
 import ProjectCardModal from '@/components/ui/projectcardModal'
 import { useState } from 'react'
@@ -33,23 +33,31 @@ const VARIANTS_CONTAINER = {
     transition: {
       ease: EASE,
       duration: 0.5,
-      delayChildren: 0.12,
-      staggerChildren: 0.06,
+      delayChildren: 0.1,
+      staggerChildren: 0.08,
     },
   },
 }
 
 const VARIANTS_SECTION = {
-  hidden: { opacity: 0, y: 10, filter: 'blur(6px)' },
+  hidden: { opacity: 0, y: 12, filter: 'blur(4px)' },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { ease: EASE, duration: 0.5 },
+    transition: { ease: EASE, duration: 0.4 },
   },
 }
 
-const TRANSITION_SECTION = { ease: EASE, duration: 0.5 }
+const VARIANTS_CONTAINER_REDUCED = {
+  hidden: { opacity: 1 },
+  visible: { opacity: 1, transition: { duration: 0 } },
+}
+
+const VARIANTS_SECTION_REDUCED = {
+  hidden: { opacity: 1, y: 0, filter: 'none' },
+  visible: { opacity: 1, y: 0, filter: 'none', transition: { duration: 0 } },
+}
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
@@ -89,28 +97,22 @@ export default function Personal() {
   const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0, 6)
   const visibleBlog = showAll ? BLOG_POSTS : BLOG_POSTS.slice(0, 3)
 
-  // If user prefers reduced motion, minimize entrance animations
-  const sectionAnimProps = prefersReduced
-    ? { initial: false, whileInView: undefined, transition: { duration: 0 } }
-    : {
-        initial: 'hidden' as const,
-        whileInView: 'visible' as const,
-        transition: TRANSITION_SECTION,
-      }
+  const containerVariants = prefersReduced
+    ? VARIANTS_CONTAINER_REDUCED
+    : VARIANTS_CONTAINER
+  const sectionVariants = prefersReduced
+    ? VARIANTS_SECTION_REDUCED
+    : VARIANTS_SECTION
 
   return (
     <motion.main
       className="space-y-10"
-      variants={VARIANTS_CONTAINER}
-      initial={prefersReduced ? undefined : 'hidden'}
-      animate={prefersReduced ? undefined : 'visible'}
+      variants={containerVariants}
+      initial={prefersReduced ? 'visible' : 'hidden'}
+      animate="visible"
     >
       {/* Head */}
-      <motion.section
-        variants={VARIANTS_SECTION}
-        viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-        {...sectionAnimProps}
-      >
+      <motion.section variants={sectionVariants}>
         <div className="text-gray flex flex-col gap-y-6">
           <div className="text-2xl text-zinc-600 dark:text-zinc-400">
             <p>{ABOUT_ME[0].description}</p>
@@ -268,8 +270,7 @@ export default function Personal() {
 
       {/* Work Experience */}
       <motion.section
-        variants={VARIANTS_SECTION}
-        transition={TRANSITION_SECTION}
+        variants={sectionVariants}
         className="mx-auto max-w-4xl"
       >
         <div className="mb-5 flex items-center justify-between">
@@ -294,11 +295,7 @@ export default function Personal() {
       </motion.section>
 
       {/* Projects */}
-      <motion.section
-        variants={VARIANTS_SECTION}
-        viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-        {...sectionAnimProps}
-      >
+      <motion.section variants={sectionVariants}>
         <div className="mb-5 flex items-center justify-between">
           <h3 className="text-lg font-medium">My Projects</h3>
           {PROJECTS.length > 4 && (
@@ -336,11 +333,7 @@ export default function Personal() {
       </motion.section>
 
       {/* Tech Stacks */}
-      <motion.section
-        variants={VARIANTS_SECTION}
-        viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-        {...sectionAnimProps}
-      >
+      <motion.section variants={sectionVariants}>
         <TechStackSection />
       </motion.section>
 
