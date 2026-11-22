@@ -3,7 +3,6 @@ import { AnimatedBackground } from '@/components/ui/animated-background'
 import { MoonIcon, SunIcon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 const THEMES_OPTIONS = [
   {
@@ -68,12 +67,6 @@ export function Footer() {
         <div className="text-xs text-zinc-400">
           <ThemeSwitch />
         </div>
-        <Link
-          href="/image-generator"
-          className="rounded-sm text-xs text-zinc-400 underline-offset-2 transition-colors hover:text-zinc-600 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:hover:text-zinc-300 dark:focus-visible:ring-zinc-500"
-        >
-          Image Tool
-        </Link>
       </div>
     </footer>
   )
