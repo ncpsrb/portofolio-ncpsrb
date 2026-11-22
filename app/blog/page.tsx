@@ -2,77 +2,70 @@
 
 import { BLOG_POSTS } from '../data'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 
 export default function BlogPage() {
   return (
     <main className="space-y-0">
       <h1 className="mb-5 text-2xl font-bold">All Blogs</h1>
 
-      <div className="flex flex-col space-y-0">
+      <div className="grid gap-3">
         {BLOG_POSTS.map((blog) => {
           const isAvailable = Boolean(blog.link)
           const content = (
-            <div
-              className={`relative overflow-hidden rounded-xl ${
+            <article
+              className={[
+                'group relative overflow-hidden rounded-xl border border-zinc-200/70 bg-white/75 transition-all duration-200 p-4',
+                'dark:border-white/5 dark:bg-white/[0.025]',
                 isAvailable
-                  ? 'transition-transform duration-300 group-hover:scale-[0.97]'
-                  : 'opacity-60'
-              }`}
+                  ? 'hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-white hover:shadow-md hover:shadow-zinc-200/60 dark:hover:border-white/10 dark:hover:bg-white/[0.045] dark:hover:shadow-black/20'
+                  : 'opacity-75',
+              ].join(' ')}
             >
-              {isAvailable && (
-                <div className="pointer-events-none absolute inset-0 z-0 rounded-xl bg-gradient-to-tr from-pink-500/10 to-blue-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              )}
-              <div className="relative z-10 flex items-center justify-between">
-                <div className="space-y-1">
-                  <h4
-                    className={`flex items-center gap-2 font-normal ${
-                      isAvailable
-                        ? 'text-zinc-700 dark:text-zinc-100'
-                        : 'text-zinc-500 italic dark:text-zinc-600'
-                    }`}
-                  >
+              <div
+                className={[
+                  'absolute inset-y-0 left-0 w-1 transition-colors',
+                  isAvailable
+                    ? 'bg-zinc-200 group-hover:bg-zinc-400 dark:bg-white/10 dark:group-hover:bg-white/30'
+                    : 'bg-zinc-200/60 dark:bg-white/5',
+                ].join(' ')}
+              />
+
+              <div className="flex min-w-0 items-center justify-between gap-4 pl-1">
+                <div className="min-w-0 space-y-1">
+                  <h4 className="flex items-center gap-2 text-base leading-snug font-medium text-zinc-950 dark:text-zinc-100">
                     {blog.title}
                     {!isAvailable && (
-                      <span className="rounded-full bg-yellow-200 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100">
+                      <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200">
                         Coming Soon
                       </span>
                     )}
                   </h4>
-                  <p
-                    className={`text-sm ${
-                      isAvailable
-                        ? 'text-zinc-500 dark:text-zinc-400'
-                        : 'text-zinc-400 dark:text-zinc-500'
-                    }`}
-                  >
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                     {blog.description}
                   </p>
                 </div>
 
                 {isAvailable && (
-                  <ArrowRight
-                    size={16}
-                    className="ml-4 shrink-0 transform text-zinc-400 opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:opacity-100 dark:text-zinc-700"
-                  />
+                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 transition-colors group-hover:border-zinc-300 group-hover:text-zinc-700 dark:border-white/10 dark:text-zinc-500 dark:group-hover:border-white/15 dark:group-hover:text-zinc-200">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
                 )}
               </div>
-            </div>
+            </article>
           )
 
           return isAvailable ? (
             <Link
               key={blog.uid}
               href={blog.link}
-              className="group block rounded-xl px-4 py-4 no-underline transition-all duration-300 hover:bg-zinc-100/20 dark:hover:bg-zinc-800/40"
+              data-id={blog.uid}
+              className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500"
             >
               {content}
             </Link>
           ) : (
-            <div
-              key={blog.uid}
-              className="cursor-not-allowed rounded-xl bg-zinc-100/10 px-4 py-4 dark:bg-zinc-800/30"
-            >
+            <div key={blog.uid} className="cursor-not-allowed">
               {content}
             </div>
           )

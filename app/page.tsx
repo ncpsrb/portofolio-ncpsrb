@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'motion/react'
-import { Download, Mail, XIcon } from 'lucide-react'
+import { ArrowUpRight, Download, Mail, XIcon } from 'lucide-react'
 import ProjectCardModal from '@/components/ui/projectcardModal'
 import { useState } from 'react'
 import {
@@ -337,52 +337,81 @@ export default function Personal() {
         <TechStackSection />
       </motion.section>
 
-      {/* BLOG */}
-      {/* <motion.section
-  variants={VARIANTS_SECTION}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-  transition={TRANSITION_SECTION}
->
+      {/* Blog */}
+      <motion.section variants={sectionVariants}>
         <div className="mb-5 flex items-center justify-between">
-          <h3 className="text-lg font-medium">Notes</h3>
-          {BLOG_POSTS.length > 3 && (
-            <Link href="/blog" className="text-sm font-medium">
-              Show All →
-            </Link>
-          )}
-        </div>
-        <div className="flex flex-col space-y-0">
-          <AnimatedBackground
-            enableHover
-            className="h-full w-full rounded-lg bg-zinc-100 dark:bg-zinc-300/10"
-            transition={{
-              type: 'spring',
-              bounce: 0,
-              duration: 0.2,
-            }}
+          <h3 className="text-lg font-medium">Blog</h3>
+          <Link
+            href="/blog"
+            className="rounded-sm text-sm font-medium text-zinc-800 transition-colors hover:text-zinc-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:text-zinc-200 dark:hover:text-zinc-400 dark:focus-visible:ring-zinc-500"
           >
-            {visibleBlog.map((post) => (
-              <Link
-                key={post.uid}
-                className="-mx-3 rounded-xl px-3 py-3"
-                href={post.link}
-                data-id={post.uid}
-              >
-                <div className="flex flex-col space-y-1">
-                  <h4 className="font-normal dark:text-zinc-100">
-                    {post.title}
-                  </h4>
-                  <p className="text-zinc-500 dark:text-zinc-400">
-                    {post.description}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </AnimatedBackground>
+            Show All →
+          </Link>
         </div>
-      </motion.section> */}
+
+        <div className="grid gap-3">
+          {visibleBlog.map((blog) => {
+            const isAvailable = Boolean(blog.link)
+            const content = (
+              <article
+                className={[
+                  'group relative overflow-hidden rounded-xl border border-zinc-200/70 bg-white/75 transition-all duration-200 p-4',
+                  'dark:border-white/5 dark:bg-white/[0.025]',
+                  isAvailable
+                    ? 'hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-white hover:shadow-md hover:shadow-zinc-200/60 dark:hover:border-white/10 dark:hover:bg-white/[0.045] dark:hover:shadow-black/20'
+                    : 'opacity-75',
+                ].join(' ')}
+              >
+                <div
+                  className={[
+                    'absolute inset-y-0 left-0 w-1 transition-colors',
+                    isAvailable
+                      ? 'bg-zinc-200 group-hover:bg-zinc-400 dark:bg-white/10 dark:group-hover:bg-white/30'
+                      : 'bg-zinc-200/60 dark:bg-white/5',
+                  ].join(' ')}
+                />
+
+                <div className="flex min-w-0 items-center justify-between gap-4 pl-1">
+                  <div className="min-w-0 space-y-1">
+                    <h4 className="flex items-center gap-2 text-base leading-snug font-medium text-zinc-950 dark:text-zinc-100">
+                      {blog.title}
+                      {!isAvailable && (
+                        <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200">
+                          Coming Soon
+                        </span>
+                      )}
+                    </h4>
+                    <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                      {blog.description}
+                    </p>
+                  </div>
+
+                  {isAvailable && (
+                    <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-zinc-200 text-zinc-400 transition-colors group-hover:border-zinc-300 group-hover:text-zinc-700 dark:border-white/10 dark:text-zinc-500 dark:group-hover:border-white/15 dark:group-hover:text-zinc-200">
+                      <ArrowUpRight className="h-4 w-4" />
+                    </span>
+                  )}
+                </div>
+              </article>
+            )
+
+            return isAvailable ? (
+              <Link
+                key={blog.uid}
+                href={blog.link}
+                data-id={blog.uid}
+                className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500"
+              >
+                {content}
+              </Link>
+            ) : (
+              <div key={blog.uid} className="cursor-not-allowed">
+                {content}
+              </div>
+            )
+          })}
+        </div>
+      </motion.section>
     </motion.main>
   )
 }
